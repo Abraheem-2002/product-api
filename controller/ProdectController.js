@@ -107,7 +107,7 @@ exports.getallbyid = async (req,res) => {
     
 }
 
-exports.updet = async (req,res) => {
+exports.update = async (req,res) => {
     try {
         await prodectModel.findOneAndUpdate({_id:req.params.id},{
             prodectname : req.body.prodectname,
@@ -118,7 +118,7 @@ exports.updet = async (req,res) => {
             thereid : req.body.thereid,
         }).then((result)=>{
         return res.json({
-            msg : "your prodect has been updeted",
+            msg : "your prodect has been updated",
             stete:1,
             data : result
         }).catch(()=>{

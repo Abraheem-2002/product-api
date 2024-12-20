@@ -91,13 +91,13 @@ exports.getallbyid = async (req,res) => {
 }
 
 
-exports.updet = async (req,res) => {
+exports.update = async (req,res) => {
     try {
         await supproModel.findOneAndUpdate({_id:req.params.id},{
             companyname :req.body.companyname,
         }).then((result)=>{
         return res.json({
-            msg : "your sup prodect has been updeted",
+            msg : "your sup prodect has been updated",
             stete:1,
             data : result
         }).catch(()=>{

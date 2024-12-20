@@ -65,14 +65,14 @@ exports.getsecondfield = async (req,res) => {
 }
 
 
-exports.updet = async (req,res) => {
+exports.update = async (req,res) => {
     try {
         await MainproModel.findOneAndUpdate({_id:req.params.id},{
             mainname : req.body.mainname,
             image : req.body.image,
         }).then((result)=>{
         return res.json({
-            msg : "your sup prodect has been updeted",
+            msg : "your sup prodect has been updated",
             stete:1,
             data : result
         }).catch(()=>{
