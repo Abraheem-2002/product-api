@@ -14,13 +14,15 @@ router.delete("/delete/:id",mainprocontroller.delete);
 router.post("/createsuppro",supprocontroller.createsecondfield);
 router.get("/getall",supprocontroller.getall);
 router.get("/getallbyid/:id",supprocontroller.getallbyid);
-router.put("/updet/:id",supprocontroller.updet);
-router.delete("/delete/:id",supprocontroller.delete);
+router.put("/updetsup/:id",supprocontroller.updet);
+router.delete("/deletesup/:id",supprocontroller.delete);
 
 
 router.post("/craeteprodect",prodectcontroller.createprodect);
 router.get("/getallprodect",prodectcontroller.getall);
 router.get("/getallbyid/:id",prodectcontroller.getallbyid);
-router.put("/updet/:id",prodectcontroller.updet);
-router.delete("/delete/:id",prodectcontroller.delete);
+router.put("/updetpro/:id",prodectcontroller.updet);
+router.delete("/deletepro/:id",prodectcontroller.delete);
+
+
 module.exports = router;
