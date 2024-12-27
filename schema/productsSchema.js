@@ -25,7 +25,7 @@ const prodectSchema = new schema ({
     price : {
         type : Number
     },
-    thereid : {
+    supproid : {
         type : String
     }
 })

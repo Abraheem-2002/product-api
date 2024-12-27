@@ -65,8 +65,8 @@ exports.getall = async (req,res) => {
 exports.getallbyid = async (req,res) => {
  try {
     // thereid : req.params.thereid
-    id : req.params.id
-    const ourresult = await supproModel.find({thereid : id})
+   const id = req.params.id
+    const ourresult = await supproModel.find({mainproid : id})
     if (ourresult){
         return res.json({
             msg : "this your sup prodect with id",

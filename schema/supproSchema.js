@@ -5,7 +5,7 @@ const supproSchema = new schema ({
     companyname : {
         type : String
     },
-    thereid : {
+    mainproid : {
         type : String
     },
 

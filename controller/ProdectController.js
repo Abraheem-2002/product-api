@@ -81,9 +81,9 @@ exports.getall = async (req,res) => {
 
 exports.getallbyid = async (req,res) => {
     try {
-        id : req.params.id
+       const id = req.params.id
     
-        await prodectModel.find({thereid : id}).then((result) =>{
+        await prodectModel.find({supproid : id}).then((result) =>{
             return res.json({
                 msg : "That is all Your prodects",
                 stete : 1,
