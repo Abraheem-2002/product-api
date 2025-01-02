@@ -4,8 +4,8 @@ const supproModel = require("../model/supproModel");
 exports.createsecondfield = async (req,res) => {
     try {
        const companyname = req.body.companyname;
-       const thereid = req.body.thereid;
-       if (!companyname || !thereid){
+       const mainproid = req.body.mainproid;
+       if (!companyname || !mainproid){
         return res.json({
             msg : "plase fell the field !",
             stete : 0,
@@ -14,7 +14,7 @@ exports.createsecondfield = async (req,res) => {
        }
         await supproModel.create({
            companyname : companyname,
-           thereid : thereid,
+           mainproid : mainproid,
         }).then((ourdata)=>{
             return res.json({
                 msg : "Your sup prodect has been created seccsfuly",
@@ -64,7 +64,6 @@ exports.getall = async (req,res) => {
 
 exports.getallbyid = async (req,res) => {
  try {
-    // thereid : req.params.thereid
    const id = req.params.id
     const ourresult = await supproModel.find({mainproid : id})
     if (ourresult){

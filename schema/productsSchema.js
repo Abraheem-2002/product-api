@@ -27,7 +27,19 @@ const prodectSchema = new schema ({
     },
     supproid : {
         type : String
-    }
+    },
+    year : {
+        type : Number
+    },
+    color : {
+        type : String
+    },
+    miles : {
+        type : Number
+    },
+
+
+
 })
 
 module.exports = prodectSchema;

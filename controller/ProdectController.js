@@ -9,9 +9,12 @@ exports.createprodect = async (req,res) => {
         const quantity = req.body.quantity;
         const image = req.body.image;
         const price = req.body.price;
-        const thereid = req.body.thereid;
-    
-        if(!prodectname || !descripition || !quantity || !image || !price || !thereid ){
+        const supproid = req.body.supproid;
+        const year = req.body.year;
+        const color = req.body.color;
+        const miles =req.body.miles;
+            
+        if(!prodectname || !descripition || !quantity || !image || !price || !supproid || !year || !color || !miles){
             return res.json({
                 msg : "plase fell the field",
                 stete : 0,
@@ -25,7 +28,10 @@ exports.createprodect = async (req,res) => {
             image : image,
             quantity : quantity,
             price : price,
-            thereid : thereid,
+            supproid : supproid,
+            year : year,
+            color :color,
+            miles : miles,
         }).then((database)=>{
           return res.json({
             msg : "Your prodects has been created seccsfuly",
@@ -82,19 +88,85 @@ exports.getall = async (req,res) => {
 exports.getallbyid = async (req,res) => {
     try {
        const id = req.params.id
+       const returnresult = await prodectModel.find({supproid : id})
+       if (returnresult){
+        return res.json({
+            msg : "That is all Your prodects in your prand",
+            stete : 1,
+            data : returnresult,
+       })}else{
+        return res.json({
+            msg : "internal server error",
+            stete : 0,
+            data : [],
+        })
+       } 
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            msg : "internal server error",
+            stete : 0,
+            data : [],
+        })
+    }
     
-        await prodectModel.find({supproid : id}).then((result) =>{
+}
+
+exports.getbyyear = async(req,res) => {
+    try {
+        const id = req.params.id;
+        const {year,supproid} = req.body;
+        const result = await prodectModel.find({
+            supproid : id,
+            year : year,
+            
+        }
+        )
+
+        if(result){
             return res.json({
-                msg : "That is all Your prodects",
-                stete : 1,
-                data : result,  
-            }).catch(()=>{
-                return res.json({
-                    msg : "internal server error",
-                    stete : 0,
-                    data : [],
-                })  
+                msg : "Great that's all prodect with this year",
+                state : 1,
+                data : result
             })
+        }else{
+            return res.json({
+                msg : "something wrong",
+                stete : 0,
+                data : [],
+            })
+   
+        }
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            msg : "internal server error",
+            stete : 0,
+            data : [],
+        })
+    }
+}
+
+
+exports.getbycolor = async(req,res) => {
+    try {
+        const id = req.params.id;
+        const {color,supproid} = req.body;
+        await prodectModel.find({supproid : id,
+            color : color,
+        }).then((data)=>{
+         return res.json({
+            msg : "that's all prodect with this color",
+            stete : 1,
+            data : data
+         }).catch((err) => {
+            console.log(err);
+            res.json({
+                msg : "somethig wrong",
+                stete :0,
+                data : [],
+            })
+         })
         })    
     } catch (error) {
         console.log(error);
@@ -107,15 +179,78 @@ exports.getallbyid = async (req,res) => {
     
 }
 
+exports.getbymiles = async(req,res) => {
+    try {
+        const id = req.params.id;
+        const {miles,supproid} = req.body;
+    
+        await prodectModel.find({supproid : id,
+            miles : miles,
+        }).then((data)=>{
+            return res.json({
+                msg : "that's all prodect with this miles",
+                stete : 1,
+                data : data,
+            }).catch((err) =>{
+                console.log(err);
+                return res.json({
+                    msg : "somethig wrong",
+                    stete : 0,
+                    data :[],
+                })
+            })
+    
+        })    
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            msg : "inetrnal server error",
+            stete : 0,
+            data : [],
+        })
+    }
+    
+}
+
+exports.getbyprice = async(req,res) => {
+    try {
+        const id = req.params.id;
+        const {supproid,price} =req.body;
+        await prodectModel.find({supproid : id,
+            price : price,
+        }).then((data) =>{
+            return res.json({
+                msg : "that's all prodect with this price",
+                stete : 1,
+                data : data,
+            })
+        }).catch((err) =>{
+            console.log(err);
+            return res.json({
+                msg : "somethig wrong",
+                stete :0,
+                data :[],
+            })            
+        })
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            msg : "internal server error",
+            stete : 0,
+            data :[],
+        })
+    }
+}
 exports.update = async (req,res) => {
     try {
         await prodectModel.findOneAndUpdate({_id:req.params.id},{
-            prodectname : req.body.prodectname,
-            descripition : req.body.descripition,
-            // quantity : quantity-1,
-            quantity :req.body.quantity,
-            price : req.body.price,
-            thereid : req.body.thereid,
+            $or :{
+                prodectname : req.body.prodectname,
+                descripition : req.body.descripition,
+                quantity :req.body.quantity,
+                price : req.body.price,
+                thereid : req.body.thereid,
+            }
         }).then((result)=>{
         return res.json({
             msg : "your prodect has been updated",
