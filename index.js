@@ -2,10 +2,13 @@ const express = require('express')
 const router = require("./router/router");
 const cors = require("cors");
 const mongoose =require("mongoose");
+const dotenv = require("dotenv")
 const app = express()
 const port = 1000
 
-mongoose.connect("mongodb://localhost/prodect" ,{
+dotenv.config();
+
+mongoose.connect(process.env.CONNACTION_STRING,{
     useNewUrlparser : true,
     useUnifiedTopology : true,
 }).then(()=>{
