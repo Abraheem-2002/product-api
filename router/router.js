@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const mainprocontroller = require("../controller/mainController");
-const supprocontroller = require("../controller/supproController");
-const prodectcontroller = require("../controller/ProdectController");
+const mainCatController = require("../controller/mainCatController");
+const supCatController = require("../controller/supCatController");
+const productController = require("../controller/ProductController");
 
 
 router.post("/createmain",mainprocontroller.crearetmainfield);

@@ -2,12 +2,14 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 
-const prodectSchema = new schema ({
-    prodectname : {
-        type : String
+const ProductSchema = new schema ({
+    productName : {
+        type : String,
+        required : [true,"This field required"],
     },
-    descripition : {
-        type : String
+    description : {
+        type : String,
+        required : [true,"This field required"],
     },
     size : {
         type : Number
@@ -23,23 +25,31 @@ const prodectSchema = new schema ({
         type : String
     },
     price : {
-        type : Number
+        type : Number,
+        required : [true,"This field required"],
     },
-    supproid : {
-        type : String
+    supCatId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'SupCategory',
+        required : [true,"This field required"],
     },
     year : {
         type : Number
     },
     color : {
-        type : String
+        type : String,
+        required : [true,"This field required"],
     },
     miles : {
         type : Number
     },
+    userId : {
+        type : String,
+        required : [true,"This field required"],
+    }
 
 
 
 })
 
-module.exports = prodectSchema;
+module.exports = ProductSchema;

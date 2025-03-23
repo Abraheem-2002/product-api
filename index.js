@@ -8,17 +8,18 @@ const port = 1000
 
 dotenv.config();
 
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
 mongoose.connect(process.env.CONNACTION_STRING,{
     useNewUrlparser : true,
     useUnifiedTopology : true,
 }).then(()=>{
-    console.log("Seccsesful connected");
+    console.log("successfully connected");
 }).catch((err) =>{
     console.log(err);
 })
-
-app.use(cors());
-app.use(express.urlencoded({extended:true}));
 
 app.use(router);
 

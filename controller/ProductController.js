@@ -1,43 +1,33 @@
-const prodectModel = require("../model/prodectModel");
+const ProductModel = require("../model/ProductModel");
 
-exports.createprodect = async (req,res) => {
+exports.CreateProduct = async (req,res) => {
     try {
-        const prodectname = req.body.prodectname;
-        const descripition = req.body.descripition;
-        const size = req.body.size;
-        const discount = req.body.discount;
-        const quantity = req.body.quantity;
-        const image = req.body.image;
-        const price = req.body.price;
-        const supproid = req.body.supproid;
-        const year = req.body.year;
-        const color = req.body.color;
-        const miles =req.body.miles;
+        const {productName,description,quantity,image,price,supCatId,year,color,miles,userId} = req.body;
             
-        if(!prodectname || !descripition || !quantity || !image || !price || !supproid || !year || !color || !miles){
+        if(!productName || !description|| !price || !supCatId || !year || !color || !userId){
             return res.json({
-                msg : "plase fell the field",
+                msg : "please fell the field",
                 stete : 0,
                 data : [],
             })
         }
-    
-        await prodectModel.create({
-            prodectname : prodectname,
-            descripition : descripition,
+        await ProductModel.create({
+            productName : productName,
+            description : description,
             image : image,
             quantity : quantity,
             price : price,
-            supproid : supproid,
+            supCatId : supCatId,
             year : year,
             color :color,
             miles : miles,
+            userId : userId,
         }).then((database)=>{
-          return res.json({
-            msg : "Your prodects has been created seccsfuly",
+        return res.json({
+            msg : "Your product has been created successfully",
             stete : 1,
             data : database,
-          })
+        })
         }).catch((err)=>{
             console.log(err);
             return res.json({
@@ -56,23 +46,21 @@ exports.createprodect = async (req,res) => {
     }
     
 }
-
-
 exports.getall = async (req,res) => {
     try {
-        const result = await prodectModel.find({})
+        const result = await ProductModel.find({}).populate('supCatId')
     if(result){
         return res.json({
-            msg : "That is all Your prodects",
+            msg : "",
             stete : 1,
             data : result,
-          })   
+        })   
     }else{
-     return res.json({
-        msg : "There is no prodect",
+    return res.json({
+        msg : "There is no products",
         stete : 0,
         data : [],
-     })
+    })
     }
     } catch (error) {
         console.log(error);
@@ -83,24 +71,22 @@ exports.getall = async (req,res) => {
         })   
     }
 }
-
-
-exports.getallbyid = async (req,res) => {
+exports.getAllById = async (req,res) => {
     try {
-       const id = req.params.id
-       const returnresult = await prodectModel.find({supproid : id})
-       if (returnresult){
+    const id = req.query.id
+    const ReturnResult = await ProductModel.find({supCatId:id}).populate('supCatId')
+    if (ReturnResult){
         return res.json({
-            msg : "That is all Your prodects in your prand",
+            msg : "That is all Your products in your Brand",
             stete : 1,
-            data : returnresult,
-       })}else{
+            data : ReturnResult,
+    })}else{
         return res.json({
             msg : "internal server error",
             stete : 0,
             data : [],
         })
-       } 
+    } 
     } catch (error) {
         console.log(error);
         return res.json({
@@ -111,21 +97,46 @@ exports.getallbyid = async (req,res) => {
     }
     
 }
-
-exports.getbyyear = async(req,res) => {
+exports.getAllUserProducts = async(req,res)=>{
     try {
-        const id = req.params.id;
-        const {year,supproid} = req.body;
-        const result = await prodectModel.find({
-            supproid : id,
+        const id = req.query.id;
+        await ProductModel.find({userId : id}).populate('supCatId').then((data)=>{
+        console.log(data);
+        return res.status(200).send({
+            msg : '',
+            stete : 1,
+            data : data,
+        })
+        }).catch((err)=>{
+            console.log(err);
+            return res.status(500).send({
+                msg : 'internal server error',
+                stete : 0,
+                data : []
+            })
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            msg : 'internal server error',
+            stete : 0,
+            data : []
+        })
+    }
+}
+exports.getByYear = async(req,res) => {
+    try {
+        const id = req.query.id;
+        const {year} = req.body;
+        const result = await ProductModel.find({
+            supCatId : id,
             year : year,
             
         }
         )
-
         if(result){
             return res.json({
-                msg : "Great that's all prodect with this year",
+                msg : "Great that's all products with this year",
                 state : 1,
                 data : result
             })
@@ -135,7 +146,6 @@ exports.getbyyear = async(req,res) => {
                 stete : 0,
                 data : [],
             })
-   
         }
     } catch (error) {
         console.log(error);
@@ -146,27 +156,25 @@ exports.getbyyear = async(req,res) => {
         })
     }
 }
-
-
-exports.getbycolor = async(req,res) => {
+exports.getByColor = async(req,res) => {
     try {
-        const id = req.params.id;
-        const {color,supproid} = req.body;
-        await prodectModel.find({supproid : id,
+        const id = req.query.id;
+        const {color} = req.body;
+        await ProductModel.find({supCatId : id,
             color : color,
         }).then((data)=>{
-         return res.json({
-            msg : "that's all prodect with this color",
+        return res.json({
+            msg : "that's all products with this color",
             stete : 1,
             data : data
-         }).catch((err) => {
+        }).catch((err) => {
             console.log(err);
             res.json({
-                msg : "somethig wrong",
+                msg : "products wrong",
                 stete :0,
                 data : [],
             })
-         })
+        })
         })    
     } catch (error) {
         console.log(error);
@@ -178,23 +186,22 @@ exports.getbycolor = async(req,res) => {
     }
     
 }
-
-exports.getbymiles = async(req,res) => {
+exports.getByMiles = async(req,res) => {
     try {
-        const id = req.params.id;
-        const {miles,supproid} = req.body;
+        const id = req.query.id;
+        const {miles} = req.body;
     
-        await prodectModel.find({supproid : id,
+        await ProductModel.find({supCatId : id,
             miles : miles,
         }).then((data)=>{
             return res.json({
-                msg : "that's all prodect with this miles",
+                msg : "that's all products with this miles",
                 stete : 1,
                 data : data,
             }).catch((err) =>{
                 console.log(err);
                 return res.json({
-                    msg : "somethig wrong",
+                    msg : "something wrong",
                     stete : 0,
                     data :[],
                 })
@@ -204,30 +211,29 @@ exports.getbymiles = async(req,res) => {
     } catch (error) {
         console.log(error);
         return res.json({
-            msg : "inetrnal server error",
+            msg : "internal server error",
             stete : 0,
             data : [],
         })
     }
     
 }
-
-exports.getbyprice = async(req,res) => {
+exports.getByPrice = async(req,res) => {
     try {
-        const id = req.params.id;
-        const {supproid,price} =req.body;
-        await prodectModel.find({supproid : id,
+        const id = req.query.id;
+        const {price} =req.body;
+        await ProductModel.find({supCatId : id,
             price : price,
         }).then((data) =>{
             return res.json({
-                msg : "that's all prodect with this price",
+                msg : "that's all products with this price",
                 stete : 1,
                 data : data,
             })
         }).catch((err) =>{
             console.log(err);
             return res.json({
-                msg : "somethig wrong",
+                msg : "something wrong",
                 stete :0,
                 data :[],
             })            
@@ -243,22 +249,23 @@ exports.getbyprice = async(req,res) => {
 }
 exports.update = async (req,res) => {
     try {
-        await prodectModel.findOneAndUpdate({_id:req.params.id},{
+        await ProductModel.findOneAndUpdate({_id:req.query.id},{
             $or :{
-                prodectname : req.body.prodectname,
-                descripition : req.body.descripition,
+                productName : req.body.productName,
+                description : req.body.description,
                 quantity :req.body.quantity,
                 price : req.body.price,
-                thereid : req.body.thereid,
+                miles : req.body.miles,
+                color : req.body.color,
             }
         }).then((result)=>{
         return res.json({
-            msg : "your prodect has been updated",
+            msg : "your products has been updated",
             stete:1,
             data : result
         }).catch(()=>{
             res.json({
-                msg : "somethig wrong",
+                msg : "something wrong",
                 stete: 0,
                 data : [],
             })
@@ -274,12 +281,11 @@ exports.update = async (req,res) => {
         })       
     }
 }
-
 exports.delete = async (req,res) =>{
- try {
-    await prodectModel.findOneAndDelete({_id:req.params.id}).then(()=>{
+try {
+    await ProductModel.findOneAndDelete({_id:req.query.id}).then(()=>{
         return res.json({
-            msg : "your prodect has been deleted secssefuly",
+            msg : "your products has been deleted successfully",
             stete : 1,
             data : [], 
         })
@@ -290,12 +296,12 @@ exports.delete = async (req,res) =>{
             data : [],
         })
     })
- } catch (error) {
+} catch (error) {
     console.log(error);
         return res.json({
             msg : "internal server error",
             stete : 0,
             data : [],
         })
- }   
+}   
 }
