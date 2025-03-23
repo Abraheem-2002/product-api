@@ -71,7 +71,7 @@ exports.getall = async (req,res) => {
         })   
     }
 }
-exports.getAllById = async (req,res) => {
+exports.getById = async (req,res) => {
     try {
     const id = req.query.id
     const ReturnResult = await ProductModel.find({supCatId:id}).populate('supCatId')

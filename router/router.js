@@ -1,32 +1,40 @@
 const express = require("express");
 const router = express.Router();
+const UserController = require('../controller/userController');
 const mainCatController = require("../controller/mainCatController");
 const supCatController = require("../controller/supCatController");
 const productController = require("../controller/ProductController");
 
 
-router.post("/createmain",mainprocontroller.crearetmainfield);
-router.get("/getbyid/:id",mainprocontroller.getsecondfield);
-router.put("/update/:id",mainprocontroller.update);
-router.delete("/delete/:id",mainprocontroller.delete);
 
+//User : 
+router.post('singUp',UserController.SingUp);
+router.post('login',UserController.login);
 
-router.post("/createsuppro",supprocontroller.createsecondfield);
-router.get("/getall",supprocontroller.getall);
-router.get("/getallbyid/:id",supprocontroller.getallbyid);
-router.put("/updatesup/:id",supprocontroller.update);
-router.delete("/deletesup/:id",supprocontroller.delete);
+//Main Category :
+router.post("/createMainCat",mainCatController.createMainCat);
+router.get("/getAllMainCat",mainCatController.getAll);
+router.put("/updateMainCat",mainCatController.update);
+router.delete("/deleteMainCat",mainCatController.delete);
 
+//Second Category :
+router.post("/createSupCat",supCatController.createSupCat);
+router.get("/getallSupCat",supCatController.getall);
+router.get("/getallCompaniesById",supCatController.getAllById);
+router.put("/updateSupCat",supCatController.update);
+router.delete("/deleteSupCat",supCatController.delete);
 
-router.post("/craeteprodect",prodectcontroller.createprodect);
-router.get("/getallprodect",prodectcontroller.getall);
-router.get("/getbycolor/:id",prodectcontroller.getbycolor);
-router.get("/getbymiles/:id",prodectcontroller.getbymiles);
-router.get("/getbyprice/:id",prodectcontroller.getbyprice);
-router.get("/getbyyear/:id",prodectcontroller.getbyyear);
-router.get("/getid/:id",prodectcontroller.getallbyid);
-router.put("/updatepro/:id",prodectcontroller.update);
-router.delete("/deletepro/:id",prodectcontroller.delete);
+//Product page :
+router.post("/createProducts",productController.CreateProduct);
+router.get('getAllBySameUser',productController.getAllUserProducts)
+router.get("/getallProduct",productController.getall);
+router.get("/getByColor",productController.getByColor);
+router.get("/getByMiles",productController.getByMiles);
+router.get("/getByPrice",productController.getByPrice);
+router.get("/getByYear",productController.getByYear);
+router.get("/getById",productController.getById);//search
+router.put("/updateProduct",productController.update);
+router.delete("/deleteProduct",productController.delete);
 
 
 module.exports = router;

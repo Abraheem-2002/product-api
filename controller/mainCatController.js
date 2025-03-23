@@ -87,8 +87,10 @@ exports.getSecondCat = async (req,res) => {
 exports.update = async (req,res) => {
     try {
         await MainCatModel.findOneAndUpdate({_id:req.query.id},{
-            mainName : req.body.mainName,
-            image : req.body.image,
+            $or:{
+                mainName : req.body.mainName,
+                image : req.body.image,
+            }
         }).then((result)=>{
         return res.json({
             msg : "your sup product has been updated",
